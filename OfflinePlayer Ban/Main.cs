@@ -60,7 +60,7 @@ namespace OfflinePlayer_Ban
 
 			if (args.Parameters.Count < 1)
 			{
-				args.Player.SendErrorMessage($"Invalid syntax: {TShock.Config.Settings.CommandSpecifier}oban <username> <d/m/h/s>");
+				args.Player.SendErrorMessage($"Invalid syntax: {TShock.Config.Settings.CommandSpecifier}oban <username> <d/m/h/s> <reason>");
 				return;
 			}
 
@@ -127,7 +127,7 @@ namespace OfflinePlayer_Ban
 		{
 			if (args.Parameters.Count < 1)
 			{
-				args.Player.SendErrorMessage($"Invalid syntax: {TShock.Config.Settings.CommandSpecifier}ipban <username> <d/m/h/s>");
+				args.Player.SendErrorMessage($"Invalid syntax: {TShock.Config.Settings.CommandSpecifier}ipban <username> <d/m/h/s> <reason>");
 				return;
 			}
 
