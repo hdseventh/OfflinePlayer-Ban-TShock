@@ -15,7 +15,7 @@ namespace OfflinePlayer_Ban
 		public override string Name => "OfflinePlayer Ban";
 		public override string Author => "hdseventh";
 		public override string Description => "A plugin to ban Offline players.";
-		public override Version Version { get { return new Version(1, 0, 0, 0); } }
+		public override Version Version { get { return new Version(1, 0, 1, 0); } }
 		#endregion
 
 		public OfflinePlayer_Ban(Main game) : base(game)
@@ -51,6 +51,13 @@ namespace OfflinePlayer_Ban
 		#region Commands
 		private void OfflineBan(CommandArgs args)
 		{
+
+			AddBanResult banResult;
+			string reason = "Banned.";
+			string duration = null;
+			var result = new System.Text.StringBuilder();
+			DateTime expiration = DateTime.MaxValue;
+
 			if (args.Parameters.Count < 1)
 			{
 				args.Player.SendErrorMessage($"Invalid syntax: {TShock.Config.Settings.CommandSpecifier}oban <username> <d/m/h/s>");
@@ -70,13 +77,7 @@ namespace OfflinePlayer_Ban
 				return;
 			}
 
-			AddBanResult banResult;
-			string reason = "Banned.";
-			string duration = null;
-			var result = new System.Text.StringBuilder();
-			DateTime expiration = DateTime.MaxValue;
-
-			if(args.Parameters.Count > 1)
+			if(args.Parameters.Count >= 2)
             {
 				duration = args.Parameters[1];
 				if (TShockAPI.TShock.Utils.TryParseTime(duration, out int seconds))
@@ -84,6 +85,12 @@ namespace OfflinePlayer_Ban
 					expiration = DateTime.UtcNow.AddSeconds(seconds);
 				}
 			}
+
+			if(args.Parameters.Count > 2)
+            {
+				reason = args.Parameters[2];
+            }
+
 			string[] identifier = { $"acc:{user.Name}", $"uuid:{user.UUID}"};
 			for (int i = 0; i <= 1; i++)
 			{
@@ -143,13 +150,18 @@ namespace OfflinePlayer_Ban
 			var result = new System.Text.StringBuilder();
 			DateTime expiration = DateTime.MaxValue;
 
-			if (args.Parameters.Count > 1)
+			if (args.Parameters.Count >= 2)
 			{
 				duration = args.Parameters[1];
 				if (TShockAPI.TShock.Utils.TryParseTime(duration, out int seconds))
 				{
 					expiration = DateTime.UtcNow.AddSeconds(seconds);
 				}
+			}
+
+			if (args.Parameters.Count > 2)
+			{
+				reason = args.Parameters[2];
 			}
 
 			foreach (var ip in iplist)
