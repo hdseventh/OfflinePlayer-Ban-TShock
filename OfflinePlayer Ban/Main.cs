@@ -94,7 +94,7 @@ namespace OfflinePlayer_Ban
 			string[] identifier = { $"acc:{user.Name}", $"uuid:{user.UUID}", $"name:{user.Name}"};
 			for (int i = 0; i <= 2; i++)
 			{
-				banResult = TShockAPI.TShock.Bans.InsertBan(identifier[i], reason, reason, DateTime.UtcNow, expiration);
+				banResult = TShockAPI.TShock.Bans.InsertBan(identifier[i], reason, args.Player.Name, DateTime.UtcNow, expiration);
 				if (banResult.Ban != null)
 				{
 					result.Append($"Ban added. Ticket Number {banResult.Ban.TicketNumber} was created for identifier {identifier[i]}.\n");
@@ -109,7 +109,7 @@ namespace OfflinePlayer_Ban
 
 			foreach(var ip in iplist)
             {
-				banResult = TShockAPI.TShock.Bans.InsertBan($"ip:{ip}", reason, reason, DateTime.UtcNow, expiration);
+				banResult = TShockAPI.TShock.Bans.InsertBan($"ip:{ip}", reason, args.Player.Name, DateTime.UtcNow, expiration);
 				if (banResult.Ban != null)
 				{
 					result.Append($"Ban added. Ticket Number {banResult.Ban.TicketNumber} was created for identifier ip:{ip}.\n");
@@ -121,6 +121,11 @@ namespace OfflinePlayer_Ban
 				}
 			}
 			args.Player.SendSuccessMessage(result.ToString());
+			var players = TShockAPI.TSPlayer.FindByNameOrID(user.Name);
+			if(players.Count > 0)
+            {
+				players[0].Disconnect($"You have been banned: {reason}");
+			}
 		}
 
 		private void IPBan(CommandArgs args)
@@ -166,7 +171,7 @@ namespace OfflinePlayer_Ban
 
 			foreach (var ip in iplist)
 			{
-				banResult = TShockAPI.TShock.Bans.InsertBan($"ip:{ip}", reason, reason, DateTime.UtcNow, expiration);
+				banResult = TShockAPI.TShock.Bans.InsertBan($"ip:{ip}", reason, args.Player.Name, DateTime.UtcNow, expiration);
 				if (banResult.Ban != null)
 				{
 					result.Append($"Ban added. Ticket Number {banResult.Ban.TicketNumber} was created for identifier ip:{ip}.\n");
