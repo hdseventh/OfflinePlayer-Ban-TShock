@@ -91,8 +91,8 @@ namespace OfflinePlayer_Ban
 				reason = args.Parameters[2];
             }
 
-			string[] identifier = { $"acc:{user.Name}", $"uuid:{user.UUID}"};
-			for (int i = 0; i <= 1; i++)
+			string[] identifier = { $"acc:{user.Name}", $"uuid:{user.UUID}", $"name:{user.Name}"};
+			for (int i = 0; i <= 2; i++)
 			{
 				banResult = TShockAPI.TShock.Bans.InsertBan(identifier[i], reason, reason, DateTime.UtcNow, expiration);
 				if (banResult.Ban != null)
